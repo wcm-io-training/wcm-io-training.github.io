@@ -8,7 +8,7 @@
 
   <head>
     <meta charset="UTF-8" />
-    <title>CONGA Training | CONGA Training</title>
+    <title>DATM-59-02 Configure CONGA environments | CONGA Training</title>
 
     <link rel="shortcut icon" href="https://wcm.io/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://wcm.io/images/favicon-152.png">
@@ -30,7 +30,7 @@
 
   </head>
 
-  <body class="page-index project-io.wcm.training.conga" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+  <body class="page-datm-59-02-configure-conga-environments project-io.wcm.training.conga" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -88,30 +88,84 @@
       <ul class="breadcrumb">
         <li><a href="../../" title="wcm.io Training">wcm.io Training</a></li>
         <li class="divider">/</li>
-        <li><a href="" title="CONGA Training">CONGA Training</a></li>
+        <li><a href="index.html" title="CONGA Training">CONGA Training</a></li>
         <li class="divider">/</li>
-        <li>CONGA Training</li>
+        <li>DATM-59-02 Configure CONGA environments</li>
       </ul>
     </div>
   </header>
 
   <div class="main-body">
   <div class="row">
-    <div class="span12">
+    <div class="span8">
       <div class="body-content">
 <section> 
- <h2 id="CONGA_Training">CONGA Training</h2> 
- <p>Training materials for <a class="externalLink" href="https://devops.wcm.io/conga/">wcm.io DevOps CONGA</a>.</p>
+ <div class="page-header">
+  <h2 id="DATM-59-02_Configure_CONGA_environments">DATM-59-02 Configure CONGA environments</h2>
+ </div> 
  <section> 
-  <h3 id="Training_modules">Training modules</h3> 
+  <h3 id="Overview">Overview</h3> 
   <ul> 
-   <li><a href="DATM-57-CONGA-Overview.html">DATM-57 CONGA Overview</a></li> 
-   <li><a href="DATM-58-AEM-Configuration-with-CONGA.html">DATM-58 AEM Configuration with CONGA</a></li> 
-   <li><a href="DATM-59-CONGA-exercises.html">DATM-59 CONGA exercises</a></li> 
+   <li>Create a new environment</li> 
+   <li>Define multiple nodes</li> 
+   <li>Change configuration parameters</li> 
   </ul> 
-  <p>The trainings are provided by <a class="externalLink" href="https://diva-e.com/">diva-e</a>.</p>
- </section>
+ </section> 
+ <section> 
+  <h3 id="Git_project">Git project</h3> 
+  <ul> 
+   <li><a class="externalLink" href="https://github.com/wcm-io-training/training-conga-exercise-basic">https://github.com/wcm-io-training/training-conga-exercise-basic</a></li> 
+  </ul> 
+ </section> 
+ <section> 
+  <h3 id="Exercise">Exercise</h3> 
+  <ol style="list-style-type: decimal"> 
+   <li>Create a new environment <b>prod.yaml</b> 
+    <ul> 
+     <li>E.g. by deriving from dev.yaml</li> 
+    </ul> </li> 
+   <li>Define two nodes <b>prod1</b> and <b>prod2</b> in this environment 
+    <ul> 
+     <li>For both the roles tomcat and sample-app should be applied</li> 
+    </ul> </li> 
+   <li>Change the max. heap space 
+    <ul> 
+     <li>For node prod1: <b>1024m</b></li> 
+     <li>For node prod2: <b>2048m</b></li> 
+    </ul> </li> 
+   <li>Change the <b>welcome message</b> for the prod environment to “Hello World, welcome on the prod environment”</li> 
+  </ol> 
+ </section> 
+ <section> 
+  <h3 id="Validation">Validation</h3> 
+  <ul> 
+   <li>Regenerate the configuration</li> 
+   <li>Check that all parameters were written to the files as expected (both setenv shell files and sample-app.xml deployment descriptor)</li> 
+   <li>Deploy at least one of the two prod node config to your local Tomcat</li> 
+   <li>Restart Tomcat</li> 
+   <li>Open <a class="externalLink" href="http://localhost:8080/sample-app/">http://localhost:8080/sample-app/</a></li> 
+   <li>Check that the welcome message is updated, and total memory is increased according to the setting for the node</li> 
+  </ul> 
+ </section> 
 </section>
+      </div>
+    </div>
+    <div class="span4">
+      <div id="toc-sidebar">
+        <div class="well">
+          <ul class="nav nav-list">
+            <li class="nav-header">Table of Contents</li>
+    <li class="dropdown"><a href="#DATM-59-02_Configure_CONGA_environments" title="DATM-59-02 Configure CONGA environments">DATM-59-02 Configure CONGA environments <b class="caret"></b></a>
+      <ul class="nav nav-list">
+    <li><a href="#Overview" title="Overview">Overview</a>
+    <li><a href="#Git_project" title="Git project">Git project</a>
+    <li><a href="#Exercise" title="Exercise">Exercise</a>
+    <li><a href="#Validation" title="Validation">Validation</a>
+        <li class="divider"></li>
+      </ul>
+    </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -188,18 +242,7 @@
           <ul class="nav nav-list">
             <li class="nav-header">Maven documentation</li>
             <li >
-              <a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-down"></i></a>
-              <ul class="nav nav-list">
-            <li class="active">
-              <a href="#" title="About">About</a>
-            </li>
-            <li >
-              <a href="scm.html" title="Source Code Management">Source Code Management</a>
-            </li>
-            <li >
-              <a href="licenses.html" title="Licenses">Licenses</a>
-            </li>
-              </ul>
+              <a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-right"></i></a>
             </li>
           </ul>
         </div>

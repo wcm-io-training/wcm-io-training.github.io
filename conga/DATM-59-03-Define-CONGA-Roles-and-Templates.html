@@ -8,7 +8,7 @@
 
   <head>
     <meta charset="UTF-8" />
-    <title>CONGA Training | CONGA Training</title>
+    <title>DATM-59-03 Define CONGA Roles and Templates | CONGA Training</title>
 
     <link rel="shortcut icon" href="https://wcm.io/images/favicon.ico">
     <link rel="apple-touch-icon" href="https://wcm.io/images/favicon-152.png">
@@ -30,7 +30,7 @@
 
   </head>
 
-  <body class="page-index project-io.wcm.training.conga" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+  <body class="page-datm-59-03-define-conga-roles-and-templates project-io.wcm.training.conga" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -88,30 +88,135 @@
       <ul class="breadcrumb">
         <li><a href="../../" title="wcm.io Training">wcm.io Training</a></li>
         <li class="divider">/</li>
-        <li><a href="" title="CONGA Training">CONGA Training</a></li>
+        <li><a href="index.html" title="CONGA Training">CONGA Training</a></li>
         <li class="divider">/</li>
-        <li>CONGA Training</li>
+        <li>DATM-59-03 Define CONGA Roles and Templates</li>
       </ul>
     </div>
   </header>
 
   <div class="main-body">
   <div class="row">
-    <div class="span12">
+    <div class="span8">
       <div class="body-content">
 <section> 
- <h2 id="CONGA_Training">CONGA Training</h2> 
- <p>Training materials for <a class="externalLink" href="https://devops.wcm.io/conga/">wcm.io DevOps CONGA</a>.</p>
+ <div class="page-header">
+  <h2 id="DATM-59-03_Define_CONGA_Roles_and_Templates">DATM-59-03 Define CONGA Roles and Templates</h2>
+ </div> 
  <section> 
-  <h3 id="Training_modules">Training modules</h3> 
+  <h3 id="Overview">Overview</h3> 
   <ul> 
-   <li><a href="DATM-57-CONGA-Overview.html">DATM-57 CONGA Overview</a></li> 
-   <li><a href="DATM-58-AEM-Configuration-with-CONGA.html">DATM-58 AEM Configuration with CONGA</a></li> 
-   <li><a href="DATM-59-CONGA-exercises.html">DATM-59 CONGA exercises</a></li> 
+   <li>Update roles and introduce variants</li> 
+   <li>Change templates</li> 
+   <li>Create new parameters</li> 
+   <li>Define tenants</li> 
   </ul> 
-  <p>The trainings are provided by <a class="externalLink" href="https://diva-e.com/">diva-e</a>.</p>
- </section>
+ </section> 
+ <section> 
+  <h3 id="Git_project">Git project</h3> 
+  <ul> 
+   <li><a class="externalLink" href="https://github.com/wcm-io-training/training-conga-exercise-basic">https://github.com/wcm-io-training/training-conga-exercise-basic</a></li> 
+  </ul> 
+ </section> 
+ <section> 
+  <h3 id="Exercise">Exercise</h3> 
+  <section> 
+   <h4 id="A.29_Include_link_list_URLs_in_configuration">A) Include link list URLs in configuration</h4> 
+   <ol style="list-style-type: decimal"> 
+    <li>The role sample-app declares a parameter <b><code>sampleApp.linkList</code></b> (with default value)</li> 
+    <li>Update the deployment descriptor template (<code>context.xml.hbs</code>) to include the value of this parameter</li> 
+    <li>Be aware that the parameter is an array of multiple string values (URL). Put the URLs separated by “,” in the “link-list” parameter in the XML file</li> 
+    <li>Define multiple link list URLs in the dev environment</li> 
+   </ol> 
+  </section> 
+  <section> 
+   <h4 id="B.29_Make_instance_ID_configurable">B) Make instance ID configurable</h4> 
+   <ol style="list-style-type: decimal"> 
+    <li>The role tomcat declares an optional <b><code>instanceId</code></b> parameter (commented out)</li> 
+    <li>Update the templates setenv batch files to set a Java system environment parameter <code>sample.instanceId</code> with the configured value for this parameter 
+     <ul> 
+      <li> <p>Generate script lines like this for Windows (<code>setenv.bat.hbs</code>)</p> 
+       <div class="source"> 
+        <div class="source"> 
+         <pre>REM Set example instance ID
+SET CATALINA_OPTS=%CATALINA_OPTS% -Dsample.instanceId=xyz
+</pre> 
+        </div> 
+       </div> </li> 
+      <li> <p>Generate script lines like this for Unix (<code>setenv.sh.hbs</code>)</p> 
+       <div class="source"> 
+        <div class="source"> 
+         <pre># Set example instance ID
+CATALINA_OPTS="$CATALINA_OPTS -Dsample.instanceId=xyz"
+</pre> 
+        </div> 
+       </div> </li> 
+     </ul> </li> 
+    <li> <p>Make sure that these new lines are only included in the batch file if a value for <code>instanceId</code> is configured (condition)</p> </li> 
+    <li>Set the instanceId in the dev environment to <b>test</b></li> 
+    <li>Set the instanceId in the prod environment to the <b>node name</b> of each node</li> 
+   </ol> 
+  </section> 
+  <section> 
+   <h4 id="C.29_Introduce_role_variants_and_define_tenants">C) Introduce role variants and define tenants</h4> 
+   <ol style="list-style-type: decimal"> 
+    <li>Define two variants “single” and “multitenant” in the sample-app role 
+     <ul> 
+      <li>single = Singe application deployment without tenants</li> 
+      <li>multitenant = Deploy multiple webapps to a single tomcat instance - one for each tenant with configuration for each tenant</li> 
+     </ul> </li> 
+    <li>Assign the existing files sample-app.xml and sample.app.war to the variant “single”</li> 
+    <li>Create two new file definitions for the variant “multitenant” 
+     <ul> 
+      <li>Deployment descriptor <code>xyz.xml</code> - one file per tenant with “multiply” plugin - xyz is the tenant name</li> 
+      <li>WAR file <code>xyz.war</code> - one file per tenant with “multiply” plugin - xyz is the tenant name</li> 
+     </ul> </li> 
+    <li>Change the dev environment to use the “single” variant for the sample-app roles</li> 
+    <li>Change the prod environment to use the “multitenant” variante for the sample-app roles</li> 
+    <li>Define two tenants “tenant1” and “tenant2”</li> 
+    <li>Change the welcome message to “Hello World, welcome xyz!” - xyz is the tenant name</li> 
+    <li>Define one link URL that is used for all tenants. Define additional link URLs for each tenant and merge the list with the global URL. For each tenant both global and tenant-specific link URLs should be displayed.</li> 
+   </ol> 
+  </section> 
+ </section> 
+ <section> 
+  <h3 id="Validation">Validation</h3> 
+  <ul> 
+   <li>A) Make sure the list of link URLs is displayed properly in the webapp and the links are clickable</li> 
+   <li>B) Make sure “test” is displayed as instance ID on the dev environment, and “prod1” / “prod2” for the nodes on the prod environment</li> 
+   <li>C) Deploy the multitenant configuration of the prod environment to your Tomcat 
+    <ul> 
+     <li>Open URLs <a class="externalLink" href="http://localhost:8080/tenant1">http://localhost:8080/tenant1</a> and <a class="externalLink" href="http://localhost:8080/tenant2">http://localhost:8080/tenant2</a></li> 
+     <li>Both should show different values for the welcome message and link list</li> 
+    </ul> </li> 
+  </ul> 
+ </section> 
 </section>
+      </div>
+    </div>
+    <div class="span4">
+      <div id="toc-sidebar">
+        <div class="well">
+          <ul class="nav nav-list">
+            <li class="nav-header">Table of Contents</li>
+    <li class="dropdown"><a href="#DATM-59-03_Define_CONGA_Roles_and_Templates" title="DATM-59-03 Define CONGA Roles and Templates">DATM-59-03 Define CONGA Roles and Templates <b class="caret"></b></a>
+      <ul class="nav nav-list">
+    <li><a href="#Overview" title="Overview">Overview</a>
+    <li><a href="#Git_project" title="Git project">Git project</a>
+    <li class="dropdown"><a href="#Exercise" title="Exercise">Exercise <b class="caret"></b></a>
+      <ul class="nav nav-list">
+    <li><a href="#A.29_Include_link_list_URLs_in_configuration" title="A) Include link list URLs in configuration">A) Include link list URLs in configuration</a>
+    <li><a href="#B.29_Make_instance_ID_configurable" title="B) Make instance ID configurable">B) Make instance ID configurable</a>
+    <li><a href="#C.29_Introduce_role_variants_and_define_tenants" title="C) Introduce role variants and define tenants">C) Introduce role variants and define tenants</a>
+        <li class="divider"></li>
+      </ul>
+    </li>
+    <li><a href="#Validation" title="Validation">Validation</a>
+        <li class="divider"></li>
+      </ul>
+    </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -188,18 +293,7 @@
           <ul class="nav nav-list">
             <li class="nav-header">Maven documentation</li>
             <li >
-              <a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-down"></i></a>
-              <ul class="nav nav-list">
-            <li class="active">
-              <a href="#" title="About">About</a>
-            </li>
-            <li >
-              <a href="scm.html" title="Source Code Management">Source Code Management</a>
-            </li>
-            <li >
-              <a href="licenses.html" title="Licenses">Licenses</a>
-            </li>
-              </ul>
+              <a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-right"></i></a>
             </li>
           </ul>
         </div>
