@@ -151,28 +151,11 @@
    </ul> 
   </section> 
   <section> 
-   <h4 id="B.29_Enable_CRXDE_Lite_.2F_DavEx_Servlet">B) Enable CRXDE Lite / DavEx Servlet</h4> 
+   <h4 id="B.29_Deploy_Groovy_Console_on_Author">B) Deploy Groovy Console on Author</h4> 
    <p>Exercise:</p> 
    <ol style="list-style-type: decimal"> 
-    <li>By default, CRXDE Lite is disabled on an AEM instance started in “nosamplecontent” = production mode</li> 
-    <li>This can be enabled as described described here: <a class="externalLink" href="https://docs.adobe.com/docs/en/aem/6-2/administer/security/security-checklist/enabling-crxde-lite.html">Enabling CRXDE Lite in AEM</a></li> 
-    <li>This OSGi configuration is also included in the CONGA AEM Definitions, but it is switched off by default</li> 
-    <li>Task: Find out the correct CONGA configuration parameter for this in <a class="externalLink" href="https://github.com/wcm-io-devops/conga-aem-definitions/tree/develop/conga-aem-definitions">https://github.com/wcm-io-devops/conga-aem-definitions/tree/develop/conga-aem-definitions</a></li> 
-    <li>Enable CRXDE Lite for all nodes of the local environment <code>development.yaml</code> (the config definition which is used for the local deployment)</li> 
-    <li>Redeploy the application and configuration to your local AEM instance</li> 
-   </ol> 
-   <p>Validation:</p> 
-   <ul> 
-    <li>Open <a class="externalLink" href="http://localhost:4502/crx/de">http://localhost:4502/crx/de</a> and ensure you can see the whole content tree</li> 
-    <li>Look for the OSGi configuration file <code>/apps/aem-cms-system-config/config.author/org.apache.sling.jcr.davex.config</code> in the repository and ensure it exists</li> 
-   </ul> 
-  </section> 
-  <section> 
-   <h4 id="C.29_Deploy_Groovy_Console_on_Author">C) Deploy Groovy Console on Author</h4> 
-   <p>Exercise:</p> 
-   <ol style="list-style-type: decimal"> 
-    <li>Citytech (recently aquired by Olsen Digital, now ICF Next) has published a nice tool for AEM: The “AEM Groovy Console”: <a class="externalLink" href="https://github.com/icfnext/aem-groovy-console">https://github.com/icfnext/aem-groovy-console</a></li> 
-    <li>The AEM ZIP package for deploying it is also available on Maven Central: <a class="externalLink" href="https://repo1.maven.org/maven2/com/icfolson/aem/groovy/console/aem-groovy-console/13.0.0/">https://repo1.maven.org/maven2/com/icfolson/aem/groovy/console/aem-groovy-console/13.0.0/</a></li> 
+    <li>There is a nice Open Source tool for AEM, the “AEM Groovy Console”: <a class="externalLink" href="https://github.com/CID15/aem-groovy-console">https://github.com/CID15/aem-groovy-console</a></li> 
+    <li>The AEM ZIP package for deploying it is also available on Maven Central: <a class="externalLink" href="https://repo1.maven.org/maven2/org/cid15/aem/groovy/console/aem-groovy-console-all/17.0.0/">https://repo1.maven.org/maven2/org/cid15/aem/groovy/console/aem-groovy-console-all/17.0.0/</a></li> 
     <li>Please extend the role <code>wcm-io-samples-cms</code> to include a deployment of this Groovy Console Package</li> 
     <li>Make the deployment of this file conditional using a configuration parameter, similar as it is already done for the sample content in the same role</li> 
     <li>Deploy the Groovy Console only for the author node of the local environment <code>development.yaml</code></li> 
@@ -184,13 +167,11 @@
    </ul> 
   </section> 
   <section> 
-   <h4 id="D.29_Restrict_Access_to_Groovy_Console_to_Administrators">D) Restrict Access to Groovy Console to Administrators</h4> 
+   <h4 id="C.29_Restrict_Access_to_Groovy_Console_to_Administrators">C) Restrict Access to Groovy Console to Administrators</h4> 
    <p>Preparation - create two new users:</p> 
    <ul> 
     <li>Create a new non-admin user “author” with password “author” at <a class="externalLink" href="http://localhost:4502/security/users.html">http://localhost:4502/security/users.html</a></li> 
     <li>Assign this user to group “Authors” (content-authors)</li> 
-    <li>Create a new admin user “admin2” with password “admin2” at <a class="externalLink" href="http://localhost:4502/security/users.html">http://localhost:4502/security/users.html</a></li> 
-    <li>Assign this user to group “Administrators” (administrators)</li> 
    </ul> 
    <p>Exercise:</p> 
    <ol style="list-style-type: decimal"> 
@@ -201,15 +182,35 @@
    <p>Validation:</p> 
    <ul> 
     <li>Log into AEM using the author user</li> 
-    <li>Open the Groovy Console <a class="externalLink" href="http://localhost:4502/apps/groovyconsole.html">http://localhost:4502/apps/groovyconsole.html</a> - you should not longer be allowed to open or execute scripts</li> 
-    <li>Log into AEM using the admin2 user</li> 
-    <li>Open the Groovy Console <a class="externalLink" href="http://localhost:4502/apps/groovyconsole.html">http://localhost:4502/apps/groovyconsole.html</a> - you can open scripts and execute them</li> 
-    <li>e.g. the “samples/ListTemplates.groovy” script - you have to replace <code>/content/we-retail</code> with <code>/content/wcm-io-samples/en</code></li> 
+    <li>Open the Groovy Console <a class="externalLink" href="http://localhost:4502/apps/groovyconsole.html">http://localhost:4502/apps/groovyconsole.html</a></li> 
+    <li>Try to execute this script:</li> 
    </ul> 
-   <p>Please note: once an allowed group is configured the “admin” user itself cannot longer execute scripts - this is a bug in the Groovy Console (<a class="externalLink" href="https://github.com/icfnext/aem-groovy-console/issues/86">#86</a>). That’s why we use “admin2” for validation.</p> 
+   <div class="source"> 
+    <div class="source"> 
+     <pre>def templates = [] as TreeSet
+ 
+getPage("/content/wcm-io-samples/en").recurse { page -&gt;
+    def template = page?.template?.path
+ 
+    if (template) {
+        templates.add(template)
+    }
+}
+ 
+templates.each {
+    println it
+}
+</pre> 
+    </div> 
+   </div> 
+   <ul> 
+    <li>Log into AEM using the admin user</li> 
+    <li>Open the Groovy Console <a class="externalLink" href="http://localhost:4502/apps/groovyconsole.html">http://localhost:4502/apps/groovyconsole.html</a></li> 
+    <li>Try to execute the sample from above</li> 
+   </ul> 
   </section> 
   <section> 
-   <h4 id="E.29_Add_additional_logfile_for_JCR_Query_Debugging">E) Add additional logfile for JCR Query Debugging</h4> 
+   <h4 id="D.29_Add_additional_logfile_for_JCR_Query_Debugging">D) Add additional logfile for JCR Query Debugging</h4> 
    <p>Exercise:</p> 
    <ol style="list-style-type: decimal"> 
     <li>We want to debug JCR queries by setting DEBUG log level for these two log categories: 
@@ -228,7 +229,7 @@
    </ul> 
   </section> 
   <section> 
-   <h4 id="F.29_Make_the_languages_displayed_in_AEM_translator_configurable">F) Make the languages displayed in AEM translator configurable</h4> 
+   <h4 id="E.29_Make_the_languages_displayed_in_AEM_translator_configurable">E) Make the languages displayed in AEM translator configurable</h4> 
    <p>Exercise:</p> 
    <ol style="list-style-type: decimal"> 
     <li>AEM comes with a translator tool for managing i18n dictionaries: <a class="externalLink" href="http://localhost:4502/libs/cq/i18n/translator.html">http://localhost:4502/libs/cq/i18n/translator.html</a></li> 
@@ -251,7 +252,7 @@
    </ul> 
   </section> 
   <section> 
-   <h4 id="G.29_Add_ACLs_for_translator_language_configuration">G) Add ACLs for translator language configuration</h4> 
+   <h4 id="F.29_Add_ACLs_for_translator_language_configuration">F) Add ACLs for translator language configuration</h4> 
    <p>Exercise:</p> 
    <ol style="list-style-type: decimal"> 
     <li>Currently, the updated list of languages in the Translator <a class="externalLink" href="http://localhost:4502/libs/cq/i18n/translator.html">http://localhost:4502/libs/cq/i18n/translator.html</a> is only visible for admin users - to fix this we need to add proper ACLs to the node to make it visible for other users as well</li> 
@@ -299,12 +300,11 @@
     <li class="dropdown"><a href="#Exercise" title="Exercise">Exercise <b class="caret"></b></a>
       <ul class="nav nav-list">
     <li><a href="#A.29_Deploy_the_sample_application_and_predefined_configuration" title="A) Deploy the sample application and predefined configuration">A) Deploy the sample application and predefined configuration</a>
-    <li><a href="#B.29_Enable_CRXDE_Lite_.2F_DavEx_Servlet" title="B) Enable CRXDE Lite / DavEx Servlet">B) Enable CRXDE Lite / DavEx Servlet</a>
-    <li><a href="#C.29_Deploy_Groovy_Console_on_Author" title="C) Deploy Groovy Console on Author">C) Deploy Groovy Console on Author</a>
-    <li><a href="#D.29_Restrict_Access_to_Groovy_Console_to_Administrators" title="D) Restrict Access to Groovy Console to Administrators">D) Restrict Access to Groovy Console to Administrators</a>
-    <li><a href="#E.29_Add_additional_logfile_for_JCR_Query_Debugging" title="E) Add additional logfile for JCR Query Debugging">E) Add additional logfile for JCR Query Debugging</a>
-    <li><a href="#F.29_Make_the_languages_displayed_in_AEM_translator_configurable" title="F) Make the languages displayed in AEM translator configurable">F) Make the languages displayed in AEM translator configurable</a>
-    <li><a href="#G.29_Add_ACLs_for_translator_language_configuration" title="G) Add ACLs for translator language configuration">G) Add ACLs for translator language configuration</a>
+    <li><a href="#B.29_Deploy_Groovy_Console_on_Author" title="B) Deploy Groovy Console on Author">B) Deploy Groovy Console on Author</a>
+    <li><a href="#C.29_Restrict_Access_to_Groovy_Console_to_Administrators" title="C) Restrict Access to Groovy Console to Administrators">C) Restrict Access to Groovy Console to Administrators</a>
+    <li><a href="#D.29_Add_additional_logfile_for_JCR_Query_Debugging" title="D) Add additional logfile for JCR Query Debugging">D) Add additional logfile for JCR Query Debugging</a>
+    <li><a href="#E.29_Make_the_languages_displayed_in_AEM_translator_configurable" title="E) Make the languages displayed in AEM translator configurable">E) Make the languages displayed in AEM translator configurable</a>
+    <li><a href="#F.29_Add_ACLs_for_translator_language_configuration" title="F) Add ACLs for translator language configuration">F) Add ACLs for translator language configuration</a>
         <li class="divider"></li>
       </ul>
     </li>
